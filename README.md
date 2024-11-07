@@ -1,6 +1,6 @@
 # Java Convenience Store Precourse
 
-## 기능 요구 사항
+리## 기능 요구 사항
 - 파일 로더
   - [ ] production.md, promotion.md 파일 불러오기
   - [ ] 라인 별로 문자열 가져오기
