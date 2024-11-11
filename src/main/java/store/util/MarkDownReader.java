@@ -1,11 +1,8 @@
 package store.util;
 
-import store.exception.FileManagerExceptionMassage;
 import store.model.parser.MarkDownParser;
 import store.model.parser.Parser;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MarkDownReader {
