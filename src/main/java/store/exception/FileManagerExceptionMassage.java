@@ -6,10 +6,12 @@ public enum FileManagerExceptionMassage {
     FILE_READ_ERROR("파일을 읽는 도중 오류가 발생 하였습니다.");
 
     private final String message;
-    FileManagerExceptionMassage(String message){
-        this.message = "[ERROR] "+message;
+
+    FileManagerExceptionMassage(String message) {
+        this.message = "[ERROR] " + message;
     }
-    public String getMessage(){
+
+    public String getMessage() {
         return this.message;
     }
 }

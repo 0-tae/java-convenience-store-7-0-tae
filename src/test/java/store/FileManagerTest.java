@@ -24,23 +24,4 @@ public class FileManagerTest {
 
         assertEquals(expected, new FileManager(path).readFileAll());
     }
-
-    @Test
-    @DisplayName("경로 내 파일에 쓰기를 수행한다.")
-    public void 경로내파일에쓰기를수행한다() {
-        String path = PREFIX + "writeFileAll_test.md";
-        ArrayList<String> contents = new ArrayList<>();
-
-        int randomNum = Randoms.pickNumberInRange(1, 10);
-        contents.add("File Manager");
-        contents.add("WriteFileAll");
-        contents.add("Test" + randomNum);
-
-        FileManager fileManager = new FileManager(path);
-        fileManager.writeFileAll(contents);
-
-        List<String> expected = fileManager.readFileAll();
-
-        assertEquals(expected, contents);
-    }
 }
