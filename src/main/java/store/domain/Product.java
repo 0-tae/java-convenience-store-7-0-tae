@@ -4,9 +4,6 @@ import store.annotations.Column;
 import store.annotations.EntityConstructor;
 import store.annotations.Param;
 import store.enums.ProductExceptionMessage;
-import store.exception.LacksOfPromotionQuantityException;
-
-import java.text.DecimalFormat;
 import java.util.Objects;
 
 public class Product {
