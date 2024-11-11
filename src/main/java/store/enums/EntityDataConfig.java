@@ -22,10 +22,6 @@ public enum EntityDataConfig {
         return this.path;
     }
 
-    public Class<?> getEntityType() {
-        return this.entityType;
-    }
-
     public static EntityDataConfig findByEntityType(Class<?> givenEntityType) {
         if (givenEntityType.equals(EntityDataConfig.PROMOTIONS.entityType)) {
             return EntityDataConfig.PROMOTIONS;

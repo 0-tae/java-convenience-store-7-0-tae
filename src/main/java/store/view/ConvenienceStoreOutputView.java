@@ -41,15 +41,40 @@ public class ConvenienceStoreOutputView {
 
     public void outputBills(Bills bills) {
         List<OrderedProduct> products = bills.getOrderedProductList();
-        outputLine("===========W 편의점=============");
-        outputLine(String.format("%-10s %5s %7s", "상품명", "수량", "금액"));
-        products.forEach(product ->
-                outputLine(String.format("%-10s %6d %15s"
-                        , product.getProduct().getName()
-                        , product.getOrderedQuantity()
-                        , new DecimalFormat("#,###").format(product.getTotalCost())))
-        );
+        outputPurchasedList(products);
+        outputRewardList(products);
+        outputTotalCost(bills);
+        outputPromotionDiscountCost(bills);
+        outputMembershipDiscount(bills);
+        outputPurchaseCost(bills);
+    }
 
+    private void outputPurchaseCost(Bills bills) {
+        outputLine(String.format("%-10s %16s"
+                ,"내실돈"
+                , new DecimalFormat("#,###").format(bills.getTotalFinalPurchasedCost())));
+    }
+
+    private void outputMembershipDiscount(Bills bills) {
+        outputLine(String.format("%-10s %16s"
+                , "멤버십할인"
+                , new DecimalFormat("#,###").format(-bills.getMembershipDiscount())));
+    }
+
+    private void outputPromotionDiscountCost(Bills bills) {
+        outputLine(String.format("%-10s %16s"
+                , "행사할인"
+                , new DecimalFormat("#,###").format(-bills.getTotalRewardDiscount())));
+    }
+
+    private void outputTotalCost(Bills bills) {
+        outputLine(String.format("%-10s %5d %10s"
+                , "총구매액"
+                , bills.getTotalQuantity()
+                , new DecimalFormat("#,###").format(bills.getTotalCost())));
+    }
+
+    private void outputRewardList(List<OrderedProduct> products) {
         outputLine("============증\t정=============");
         products.stream().filter(product -> product.getRewardQuantity() >= 1).forEach(product ->
                 outputLine(String.format("%-10s %5d"
@@ -57,21 +82,16 @@ public class ConvenienceStoreOutputView {
                         , product.getRewardQuantity()))
         );
         outputLine("==============================");
-        outputLine(String.format("%-10s %5d %10s"
-                , "총구매액"
-                , bills.getTotalQuantity()
-                , new DecimalFormat("#,###").format(bills.getTotalCost())));
+    }
 
-        outputLine(String.format("%-10s %12s"
-                , "행사할인"
-                , new DecimalFormat("#,###").format(-bills.getTotalRewardDiscount())));
-
-        outputLine(String.format("%-10s %12s"
-                , "멤버십할인"
-                , new DecimalFormat("#,###").format(-bills.getMembershipDiscount())));
-
-        outputLine(String.format("%-10s %16s"
-                ,"내실돈"
-                , new DecimalFormat("#,###").format(bills.getTotalFinalPurchasedCost())));
+    private void outputPurchasedList(List<OrderedProduct> products) {
+        outputLine("===========W 편의점=============");
+        outputLine(String.format("%-10s %5s %7s", "상품명", "수량", "금액"));
+        products.forEach(product ->
+                outputLine(String.format("%-10s %5d %10s"
+                        , product.getProduct().getName()
+                        , product.getOrderedQuantity()
+                        , new DecimalFormat("#,###").format(product.getTotalCost())))
+        );
     }
 }

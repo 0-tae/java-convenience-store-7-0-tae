@@ -31,9 +31,7 @@ public class ItemParser implements StringParser<List<Item>> {
 
     private Item getProductQuantity(String item) {
         String[] seperated = item.split("-");
-
         validate(seperated);
-
         try {
             String productName = seperated[0];
             int quantity = Integer.parseInt(seperated[1]);

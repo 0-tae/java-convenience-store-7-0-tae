@@ -56,16 +56,20 @@ public class ConvenienceStoreInputView {
     public String readResponse(String message) {
         while (true) {
             try {
-                String input = input(message);
-
-                if (!(input.equals("N") || input.equals("Y"))) {
-                    throw new IllegalArgumentException("[ERROR] Y 혹은 N이 입력 되어야 합니다. 다시 입력 해주세요.");
-                }
-
-                return input;
+                return readYorN(message);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    private String readYorN(String message) {
+        String input = input(message);
+
+        if (!(input.equals("N") || input.equals("Y"))) {
+            throw new IllegalArgumentException("[ERROR] Y 혹은 N이 입력 되어야 합니다. 다시 입력 해주세요.");
+        }
+
+        return input;
     }
 }

@@ -32,16 +32,20 @@ public class ConvenienceStoreController {
     public void run() {
         while (true) {
             printWelcomeMessage();
-            Bills bills = new Bills();
 
-            processPurchase(bills);
-            membershipApply(bills);
-            outputView.outputBills(bills);
+            shopping();
 
             if (!keepShopping()) {
                 return;
             }
         }
+    }
+
+    private void shopping() {
+        Bills bills = new Bills();
+        processPurchase(bills);
+        membershipApply(bills);
+        outputView.outputBills(bills);
     }
 
     private void processPurchase(Bills bills) {
@@ -57,7 +61,11 @@ public class ConvenienceStoreController {
 
     public void printWelcomeMessage() {
         outputView.outputWelcomeMessage();
+        printProductsStatus();
+        outputView.outputLine();
+    }
 
+    private void printProductsStatus() {
         for (Product product : storeService.findProductsAll()) {
             List<Product> productPair = storeService.findProductsByName(product.getName());
             outputView.outputProductStatus(product);
@@ -66,8 +74,6 @@ public class ConvenienceStoreController {
                 outputView.outputProductStatus(product.copy());
             }
         }
-
-        outputView.outputLine();
     }
 
     public void purchase(Bills bills) {
@@ -79,7 +85,6 @@ public class ConvenienceStoreController {
             if (!orderedProduct.hasSufficientQuantity()) {
                 throw new IllegalArgumentException("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
             }
-
             processPromotion(orderedProduct);
             bills.addOrderedProduct(orderedProduct);
         }
