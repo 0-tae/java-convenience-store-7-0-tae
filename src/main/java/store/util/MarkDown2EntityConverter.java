@@ -42,17 +42,27 @@ public class MarkDown2EntityConverter implements EntityConverter<MarkDownObject>
     private List<Object> mappingParams(Parameter[] params, HashMap<String, String> columnValuesMap) {
         List<Object> finalParams = new ArrayList<>();
         for (Parameter param : params) {
-            String paramName = param.getAnnotation(Param.class).name();
-            if (paramName.equals("")) {
-                paramName = param.getName();
-            }
+            String paramName = getParamName(param);
             String value = columnValuesMap.getOrDefault(paramName, null);
-            if (value.equals("null")) {
-                value = null;
-            }
+            value = isEmpty(value);
             finalParams.add(mappingParam(param, value));
         }
         return finalParams;
+    }
+
+    private String isEmpty(String value) {
+        if (value.equals("null")) {
+            value = null;
+        }
+        return value;
+    }
+
+    private String getParamName(Parameter param) {
+        String paramName = param.getAnnotation(Param.class).name();
+        if (paramName.equals("")) {
+            paramName = param.getName();
+        }
+        return paramName;
     }
 
     private Object mappingParam(Parameter param, String givenValue) {
@@ -89,26 +99,32 @@ public class MarkDown2EntityConverter implements EntityConverter<MarkDownObject>
         List<String> result = new ArrayList<>();
 
         for (Field field : fields) {
-            if (!field.isAnnotationPresent(annotationClass)) {
-                continue;
+            if (field.isAnnotationPresent(annotationClass)) {
+                String name = getClassName(annotationClass, field);
+                result.add(name);
             }
+        }
+        return result;
+    }
 
-            String name = "";
+    private <A extends Annotation> String getClassName(Class<A> annotationClass, Field field) {
+        String name = "";
 
-            if (annotationClass == Column.class) {
-                name = (field.getAnnotation(Column.class)).name();
-            } else if (annotationClass == Param.class) {
-                name = (field.getAnnotation(Param.class)).name();
-            }
-
-            if (name.equals("")) {
-                name = field.getName();
-            }
-
-            result.add(name);
+        if (annotationClass == Column.class) {
+            name = (field.getAnnotation(Column.class)).name();
+        } else if (annotationClass == Param.class) {
+            name = (field.getAnnotation(Param.class)).name();
         }
 
-        return result;
+        name = getFieldName(field, name);
+        return name;
+    }
+
+    private String getFieldName(Field field, String name) {
+        if (name.equals("")) {
+            name = field.getName();
+        }
+        return name;
     }
 
     private HashMap<String, String> getColumnValueMap(List<String> columnsInClass, List<String> columnsInMarkDown, List<String> values) {

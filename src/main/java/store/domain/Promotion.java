@@ -59,7 +59,6 @@ public class Promotion {
 
 
     public boolean isOrderedQuantityAwardReceivable(Product product, int orderedQuantity) {
-        // Order가 프로모션 적용이 가능한 상품 갯수를 만족하면서, 현재 프로모션 상품의 개수가 get개 이상일때
         return orderedQuantity % (get + buy) == buy && (product.getPromotionQuantity() - orderedQuantity >= get);
     }
 
@@ -69,7 +68,6 @@ public class Promotion {
     }
 
     public int getNotAppliedPromotionQuantity(Product product, int orderedQuantity) {
-        // 오더한 갯수 중에서 행사 상품으로 적용되지 않는 개수
         return orderedQuantity - getAppliedPromotionQuantity(product);
     }
 
@@ -79,10 +77,6 @@ public class Promotion {
 
     public static boolean isValid(Promotion promotion, Product promotionProduct) {
         return promotion != null && promotion.isValidDate() && promotionProduct != null;
-    }
-
-    public int getIdx() {
-        return idx;
     }
 
     public String getName() {
@@ -95,14 +89,6 @@ public class Promotion {
 
     public int getGet() {
         return get;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
     }
 
     private boolean isValidDate() {
